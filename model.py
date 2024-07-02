@@ -23,11 +23,11 @@ class Taximetro:
     def __init__(self, user): 
         self.start_road = False # se asigna False(Booleano) al atributo que indica si el taxi ha iniciado la carrera
         self.last_status_change = None #este atributo se usa para guardar el ultimo estado del taximetro
-        self.fare_total = 0 # este atributo se inicia en cero (0) y se usa para mantener el valor total de la carrera
+        self.fare_total = 0 # este atributo se inicia en cero (0) y se usa para  el valor total de la carrera
         self.in_movement = False # este atributo indica si el taxi esta en movimiento o no, se inicia en False(booleano) 
         self.start_time = None #Este atributo se usa para almacenar la hora de inicio del viaje. Se inicializa con None
         self.end_time = None #almacena la hora de finalizacion del viaje, se inicializa con None
-        self.user = user[0] #se inicia con el argumento user, e indica que es una lista indexable(que accede a un indice)
+        self.user = user[0] #se inicia con el argumento user, e indica que es una lista que accede a un indice
         logging.info(f"Taximetro inicializado para el usuario {self.user}") #registra un mensaje informativo en los logs, 
         #indicando que el taxímetro se ha inicializado para el usuario self., registra un evento como iniciar carrera durante la ejecucion del programa
 
@@ -36,12 +36,12 @@ class Taximetro:
 #se define la funcion calculate fare, esta funcion calcula la tarifa teniendo en cuenta 
 #el tiempo segun demanda y el valor de tarifa base
     def calculate_fare(self): 
-        now = time.time()
-        if self.last_status_change is not None:
-            time_elapsed = now - self.last_status_change
-            fare = calculate_peak_fare(self.in_movement)
-            self.fare_total += round(time_elapsed * fare, 2)
-        self.last_status_change = now
+        now = time.time()#se usa time para calcular el tiempo en segundos
+        if self.last_status_change is not None: #se condiciona el ultimo estado para calcular el taximetro
+            time_elapsed = now - self.last_status_change #indica el tiempo transcurrido entre el tiempo actual y el ultimo cambio de estado
+            fare = calculate_peak_fare(self.in_movement) #calcula la tarifa en alta demanda en movimiento, se llama a calculate peakfare de fare ondemand
+            self.fare_total += round(time_elapsed * fare, 2) #calcula la tarifa toral basado en el tiempo que ha pasdo y la tarifa anterior
+        self.last_status_change = now # primer cambio del ultimo estado
 #se define la funcion start, inicia el programa teniendo en cuenta que el taxi esta en movimiento y el tiempo 
     def start(self):
         self.start_road = True
